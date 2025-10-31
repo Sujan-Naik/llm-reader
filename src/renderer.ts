@@ -31,3 +31,24 @@ import './index.css';
 console.log(
   '👋 This message is being logged by "renderer.ts", included via Vite',
 );
+//
+// const func = async () => {
+//   const response = await window.versions.ping()
+//   console.log(response) // prints out 'pong'
+// }
+//
+// func()
+
+const queryForm = document.getElementById("llm-query-form")
+const queryResponse = document.getElementById("llm-query-response")
+
+queryForm.addEventListener('submit', async (ev) => {
+    ev.preventDefault()
+    const req = 'test';
+
+    const response = await window.llm.query(req);
+    queryResponse.innerText = response;
+    console.log(response)
+})
+
+
