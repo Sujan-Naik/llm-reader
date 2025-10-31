@@ -16,3 +16,8 @@ contextBridge.exposeInMainWorld('windowControl', {
     ipcRenderer.send('set-ignore-mouse-events', ignore);
   },
 });
+
+contextBridge.exposeInMainWorld('electronAPI', {
+  onClipboardText: (callback: (text: string) => void) =>
+    ipcRenderer.on('clipboard-text', (_, text) => callback(text)),
+});

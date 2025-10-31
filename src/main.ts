@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-import { app, BrowserWindow, ipcMain} from 'electron';
+import { app, BrowserWindow, ipcMain,globalShortcut, clipboard} from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
 import {queryLLM} from "./api/llm";
@@ -21,9 +21,17 @@ const createWindow = () => {
     transparent: true,
     frame: false,
     backgroundColor: '#00000000',
-    fullscreen: false,
+    fullscreen: true,
     alwaysOnTop: true,
 
+  });
+  mainWindow.setIgnoreMouseEvents(true, { forward: true });
+
+  globalShortcut.register('CommandOrControl+Shift+C', async () => {
+    const text = clipboard.readText();
+    const llmExplanation = await queryLLM("Explain: " + text)
+    mainWindow.webContents.send('clipboard-text', llmExplanation);
+    mainWindow.setIgnoreMouseEvents(false, {forward: true});
   });
 
   // and load the index.html of the app.

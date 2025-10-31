@@ -13,11 +13,14 @@ export interface IElectronAPI {
   windowControl: {
     setIgnoreMouseEvents: (ignore: boolean) => void;
   };
+   electronAPI: {
+      onClipboardText: (callback: (text: string) => void) => void;
+    };
 }
 
 declare global {
   interface Window {
-    electronAPI: IElectronAPI;
+    electronAPI: IElectronAPI['electronAPI'];
     versions: IElectronAPI['versions'];
     llm: IElectronAPI['llm'];
     windowControl: IElectronAPI['windowControl'];
