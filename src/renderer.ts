@@ -27,6 +27,7 @@
  */
 
 import './index.css';
+import {ipcRenderer} from "electron";
 
 console.log(
   '👋 This message is being logged by "renderer.ts", included via Vite',
@@ -39,16 +40,24 @@ console.log(
 //
 // func()
 
-const queryForm = document.getElementById("llm-query-form")
-const queryResponse = document.getElementById("llm-query-response")
+window.addEventListener('DOMContentLoaded', () => {
+  const queryForm = document.getElementById('llm-query-form') as HTMLFormElement;
+  const queryResponse = document.getElementById('llm-query-response') as HTMLTextAreaElement;
 
-queryForm.addEventListener('submit', async (ev) => {
-    ev.preventDefault()
-    const req = 'test';
-
+  queryForm.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const req =  (document.getElementById("llm-query") as HTMLInputElement).value; // or grab from the input: (document.getElementById("llm-query") as HTMLInputElement).value
     const response = await window.llm.query(req);
-    queryResponse.innerText = response;
-    console.log(response)
-})
+    queryResponse.value = response;
+    console.log(response);
+  });
+});
 
-
+// document.body.addEventListener('mouseenter', () => {
+//   window.windowControl.setIgnoreMouseEvents(false);
+// });
+//
+// document.body.addEventListener('mouseleave', () => {
+//   window.windowControl.setIgnoreMouseEvents(true);
+// });
+//

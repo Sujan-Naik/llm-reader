@@ -10,3 +10,9 @@ contextBridge.exposeInMainWorld('versions', {
 contextBridge.exposeInMainWorld('llm', {
   query: (req: string) => ipcRenderer.invoke('query', req)
 })
+
+contextBridge.exposeInMainWorld('windowControl', {
+  setIgnoreMouseEvents: (ignore: boolean) => {
+    ipcRenderer.send('set-ignore-mouse-events', ignore);
+  },
+});

@@ -8,15 +8,20 @@ export interface IElectronAPI {
     ping: () => string;
   };
   llm: {
-      query: (string) => string;
-  }
-  // whatever else you exposed
+    query: (req: string) => Promise<string>;
+  };
+  windowControl: {
+    setIgnoreMouseEvents: (ignore: boolean) => void;
+  };
 }
 
 declare global {
   interface Window {
     electronAPI: IElectronAPI;
-    versions: typeof versions;
-    llm: typeof llm;
+    versions: IElectronAPI['versions'];
+    llm: IElectronAPI['llm'];
+    windowControl: IElectronAPI['windowControl'];
   }
 }
+
+export {};

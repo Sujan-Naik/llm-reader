@@ -1,6 +1,9 @@
+import 'dotenv/config';
+
 import { app, BrowserWindow, ipcMain} from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
+import {queryLLM} from "./api/llm";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -15,6 +18,12 @@ const createWindow = () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
+    transparent: true,
+    frame: false,
+    backgroundColor: '#00000000',
+    fullscreen: false,
+    alwaysOnTop: true,
+
   });
 
   // and load the index.html of the app.
@@ -27,7 +36,7 @@ const createWindow = () => {
   }
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
@@ -53,15 +62,20 @@ app.on('window-all-closed', () => {
 
 app.whenReady().then(() => {
   ipcMain.handle('ping', () => 'pong')
-  ipcMain.handle('query', (event, args) => 'response')
+  ipcMain.handle('query', async (_event, args) => {
+    return await queryLLM(args);
+  });
   createWindow()
 })
 
 
 
+ipcMain.on('set-ignore-mouse-events', (event, ignore) => {
+      console.log(ignore)
 
-
-
+  const win = BrowserWindow.fromWebContents(event.sender);
+  win.setIgnoreMouseEvents(ignore, { forward: true });
+});
 
 
 
