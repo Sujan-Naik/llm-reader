@@ -8,10 +8,24 @@ export interface IElectronAPI {
     ping: () => string;
   };
   llm: {
-    query: (req: string) => Promise<string>;
-  };
+      query: (args: any) => Promise<{
+        content: string;
+        usage: {
+          inputTokens: number;
+          outputTokens: number;
+          totalTokens: number;
+          inputCost: number;
+          outputCost: number;
+          totalCost: number;
+          latencyMs: number;
+          model: string;
+        };
+        chunks: string[];
+      }>;
+    };
   windowControl: {
     setIgnoreMouseEvents: (ignore: boolean) => void;
+    requestClickThrough: () => void;
   };
    electronAPI: {
       onClipboardText: (callback: (text: string) => void) => void;

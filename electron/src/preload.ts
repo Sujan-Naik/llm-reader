@@ -12,9 +12,13 @@ contextBridge.exposeInMainWorld('llm', {
 })
 
 contextBridge.exposeInMainWorld('windowControl', {
-  setIgnoreMouseEvents: (ignore: boolean) => {
-    ipcRenderer.send('set-ignore-mouse-events', ignore);
-  },
+  // direct toggle
+  setIgnoreMouseEvents: (ignore: boolean) =>
+    ipcRenderer.send('set-ignore-mouse-events', ignore),
+
+  // request a timed pass-through handled in main
+  requestClickThrough: () =>
+    ipcRenderer.send('request-click-through'),
 });
 
 contextBridge.exposeInMainWorld('electronAPI', {

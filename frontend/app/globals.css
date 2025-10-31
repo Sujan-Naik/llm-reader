@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+
+/* keep everything transparent */
+html, body {
+  /*background: transparent;*/
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* optional opaque sections */
+.overlay-box {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+}
